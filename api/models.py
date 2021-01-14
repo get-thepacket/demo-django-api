@@ -7,4 +7,6 @@ class Flights(models.Model):
     source = models.CharField(max_length=20)
     destination = models.CharField(max_length=20)
     phone = models.PositiveBigIntegerField()
-    
+
+    def __str__(self):
+        return self.flight_id + " " + self.date
