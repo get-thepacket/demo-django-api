@@ -1,8 +1,11 @@
-from django.urls import path
-from .views import *
+from django.urls import path, include
+from . import views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'flights', views.FlightViewSet)
 
 urlpatterns = [
-    path('all-flights/',all_flights), # GET request to retrieve all data
-    path('hello/',hello), #test
-    path('book-flight/',book_flight)
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
