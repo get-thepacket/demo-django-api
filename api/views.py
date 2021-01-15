@@ -47,14 +47,11 @@ class Flights(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class FlightUpdate(View):
-    #not working as of now
+    
     def get(self, request, f_id):
-        f = Flight.objects.get(id=f_id)
-        dict_data = serializers.serialize('json',f) # convert the QuerySet to Dictionary
-        response = {
-            "data":dict_data
-        }
-        return JsonResponse(response)
+        f = Flight.objects.filter(id=f_id)
+        dict_data = serializers.serialize('python',f) # convert the QuerySet to Dictionary
+        return JsonResponse(dict_data, safe=False)
 
     def put(self, request, f_id):
         flight = Flight.objects.get(id=f_id)
