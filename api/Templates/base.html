@@ -1,0 +1,16 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Title</title>  
+    {% load static %}  
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" >  
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>  
+    {% comment %} <script>alert();</script>   {% endcomment %}
+    
+</head>  
+<body class="container-fluid">
+    {% block content %}
+    {% endblock %}
+</body>  
+</html>  

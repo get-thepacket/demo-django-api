@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.core import serializers
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views import View
 from .models import Flight
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from .forms import FlightForm
 
 import json
 
@@ -44,6 +45,59 @@ class Flights(View):
             'id': obj.id
         }
         return JsonResponse(response)
+
+def flight(request):
+    obj = Flight()
+    if request.method == "POST":
+        form = FlightForm(request.POST)
+        if form.is_valid():
+            obj.flight_id = form.cleaned_data.get('flight_id')
+            obj.source = form.cleaned_data.get('source')
+            obj.destination = form.cleaned_data.get('destination')
+            obj.date = form.cleaned_data.get('date')
+            obj.phone = form.cleaned_data.get('phone')
+
+            obj.save()
+
+            return HttpResponseRedirect('/flights/')
+
+    f = Flight.objects.all()
+    count = Flight.objects.count()
+    dict_data = serializers.serialize('python',f) # convert the QuerySet to Dictionary
+    # data = {
+    #     "flights": dict_data,
+    #     "flight_count": count
+    # }
+    # print(dict_data)
+    return render(request, "flights.html", {'flights':dict_data, 'form':FlightForm})
+
+def updateFlight(request, f_id):
+    if request.method == "GET":
+        f = Flight.objects.filter(id=f_id)
+        dict_data = serializers.serialize('python',f)
+        print (dict_data)
+        return render(request, "single_flight.html", {'flight':dict_data[0], 'form':FlightForm})
+    if request.method == "PUT":
+        form = FlightForm(request.PUT)
+        if form.is_valid():
+            obj = Flight.objects.filter(id=f_id)
+            if form.cleaned_data.get('flight_id') != "":
+                obj.flight_id = form.cleaned_data.get('flight_id')
+            if form.cleaned_data.get('source') != "":
+                obj.source = form.cleaned_data.get('source')
+            if form.cleaned_data.get('destination') != "":
+                obj.destination = form.cleaned_data.get('destination')
+            if form.cleaned_data.get('date') != "":
+                obj.date = form.cleaned_data.get('date')
+            if form.cleaned_data.get('phone') != null :
+                obj.phone = form.cleaned_data.get('phone')
+            obj.save()
+            return HttpResponseRedirect('/flights/'+f_id+'/')
+    if request.method == "DELETE":
+        obj = Flight.objects.filter(id=f_id)
+        obj.delete()
+        return HttpResponseRedirect('/flights/')
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class FlightUpdate(View):
