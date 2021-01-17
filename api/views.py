@@ -59,28 +59,25 @@ def flight(request):
 
             obj.save()
 
-            return HttpResponseRedirect('/flights/')
+            return HttpResponseRedirect('/api/flights/')
 
     f = Flight.objects.all()
     count = Flight.objects.count()
     dict_data = serializers.serialize('python',f) # convert the QuerySet to Dictionary
-    # data = {
-    #     "flights": dict_data,
-    #     "flight_count": count
-    # }
-    # print(dict_data)
+    
     return render(request, "flights.html", {'flights':dict_data, 'form':FlightForm})
 
 def updateFlight(request, f_id):
     if request.method == "GET":
         f = Flight.objects.filter(id=f_id)
         dict_data = serializers.serialize('python',f)
-        print (dict_data)
         return render(request, "single_flight.html", {'flight':dict_data[0], 'form':FlightForm})
     if request.method == "PUT":
-        form = FlightForm(request.PUT)
+        form = FlightForm(request.body)
+        print(json.loads(request.body))
         if form.is_valid():
-            obj = Flight.objects.filter(id=f_id)
+            obj = Flight.objects.get(id=f_id)
+            print(form.cleaned_data)
             if form.cleaned_data.get('flight_id') != "":
                 obj.flight_id = form.cleaned_data.get('flight_id')
             if form.cleaned_data.get('source') != "":
@@ -96,7 +93,7 @@ def updateFlight(request, f_id):
     if request.method == "DELETE":
         obj = Flight.objects.filter(id=f_id)
         obj.delete()
-        return HttpResponseRedirect('/flights/')
+        return HttpResponseRedirect('/api/flights/')
 
 
 @method_decorator(csrf_exempt, name='dispatch')

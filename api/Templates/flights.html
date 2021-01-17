@@ -83,7 +83,7 @@
   <button type="submit" class="btn btn-primary">Submit</button>  
 </form>   {% endcomment %}
 
-<form action="/flights/" method="post">
+<form action="/api/flights/" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Submit">

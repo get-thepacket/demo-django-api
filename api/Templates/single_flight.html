@@ -1,7 +1,7 @@
 {%extends "base.html"%}
 {% block content %}
 
-<form action="/flights/{{flight.pk}}" method="delete">
+<form action="/api/flights/{{flight.pk}}/" method="delete">
     {% csrf_token %}
     <input type="submit" value="Delete">
 </form>
@@ -58,7 +58,7 @@
     </table>
 </div>
 
-<form action="/flights/{{flight.pk}}" method="post">
+<form action="/api/flights/{{flight.pk}}/" method="put">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Submit">
