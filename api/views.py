@@ -72,9 +72,9 @@ def updateFlight(request, f_id):
         f = Flight.objects.filter(id=f_id)
         dict_data = serializers.serialize('python',f)
         return render(request, "single_flight.html", {'flight':dict_data[0], 'form':FlightForm})
-    if request.method == "PUT":
-        form = FlightForm(request.body)
-        print(json.loads(request.body))
+    if request.method == "POST":
+        form = FlightForm(request.POST)
+        # print(json.loads(request.body))
         if form.is_valid():
             obj = Flight.objects.get(id=f_id)
             print(form.cleaned_data)
@@ -86,14 +86,19 @@ def updateFlight(request, f_id):
                 obj.destination = form.cleaned_data.get('destination')
             if form.cleaned_data.get('date') != "":
                 obj.date = form.cleaned_data.get('date')
-            if form.cleaned_data.get('phone') != null :
+            print(form.cleaned_data.get('phone'))
+            if form.cleaned_data.get('phone') != 0:
                 obj.phone = form.cleaned_data.get('phone')
             obj.save()
-            return HttpResponseRedirect('/flights/'+f_id+'/')
-    if request.method == "DELETE":
-        obj = Flight.objects.filter(id=f_id)
-        obj.delete()
+            return HttpResponseRedirect('/api/flights/'+str(f_id)+'/')
+
+def deleteFlight(request, f_id):
+    if request.method == "POST":
+        flight = Flight.objects.get(id=f_id)
+        flight.delete()
         return HttpResponseRedirect('/api/flights/')
+    else:
+        return HttpResponse('Invalid Request!')
 
 
 @method_decorator(csrf_exempt, name='dispatch')

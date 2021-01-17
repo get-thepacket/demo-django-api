@@ -7,4 +7,5 @@ urlpatterns = [
     path('hello/',Hello.as_view()), #test
     # path('flights/<int:f_id>/', FlightUpdate.as_view()),
     path('flights/<int:f_id>/',updateFlight),
+    path('flights/<int:f_id>/delete/', deleteFlight),
 ]
