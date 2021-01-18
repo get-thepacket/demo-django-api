@@ -71,26 +71,21 @@ def updateFlight(request, f_id):
     if request.method == "GET":
         f = Flight.objects.filter(id=f_id)
         dict_data = serializers.serialize('python',f)
-        return render(request, "single_flight.html", {'flight':dict_data[0], 'form':FlightForm})
+        print(dict_data[0].get('fields'))
+        return render(request, "single_flight.html", {'flight':dict_data[0], 'form':FlightForm(initial = dict_data[0].get('fields'))})
     if request.method == "POST":
         form = FlightForm(request.POST)
         # print(json.loads(request.body))
         if form.is_valid():
             obj = Flight.objects.get(id=f_id)
             print(form.cleaned_data)
-            if form.cleaned_data.get('flight_id') != "":
-                obj.flight_id = form.cleaned_data.get('flight_id')
-            if form.cleaned_data.get('source') != "":
-                obj.source = form.cleaned_data.get('source')
-            if form.cleaned_data.get('destination') != "":
-                obj.destination = form.cleaned_data.get('destination')
-            if form.cleaned_data.get('date') != "":
-                obj.date = form.cleaned_data.get('date')
-            print(form.cleaned_data.get('phone'))
-            if form.cleaned_data.get('phone') != 0:
-                obj.phone = form.cleaned_data.get('phone')
+            obj.flight_id = form.cleaned_data.get('flight_id')
+            obj.source = form.cleaned_data.get('source')
+            obj.destination = form.cleaned_data.get('destination')
+            obj.date = form.cleaned_data.get('date')
+            obj.phone = form.cleaned_data.get('phone')
             obj.save()
-            return HttpResponseRedirect('/flights/'+str(f_id)+'/')
+        return HttpResponseRedirect('/flights/'+str(f_id)+'/')
 
 def deleteFlight(request, f_id):
     if request.method == "POST":
