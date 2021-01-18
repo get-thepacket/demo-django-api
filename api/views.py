@@ -59,7 +59,7 @@ def flight(request):
 
             obj.save()
 
-            return HttpResponseRedirect('/api/flights/')
+            return HttpResponseRedirect('/flights/')
 
     f = Flight.objects.all()
     count = Flight.objects.count()
@@ -90,13 +90,13 @@ def updateFlight(request, f_id):
             if form.cleaned_data.get('phone') != 0:
                 obj.phone = form.cleaned_data.get('phone')
             obj.save()
-            return HttpResponseRedirect('/api/flights/'+str(f_id)+'/')
+            return HttpResponseRedirect('/flights/'+str(f_id)+'/')
 
 def deleteFlight(request, f_id):
     if request.method == "POST":
         flight = Flight.objects.get(id=f_id)
         flight.delete()
-        return HttpResponseRedirect('/api/flights/')
+        return HttpResponseRedirect('/flights/')
     else:
         return HttpResponse('Invalid Request!')
 

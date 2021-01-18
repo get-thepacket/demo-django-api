@@ -59,13 +59,13 @@
 </div>
 
 
-<form action="/api/flights/{{flight.pk}}/delete/" method="post">
+<form action="/flights/{{flight.pk}}/delete/" method="post">
     {% csrf_token %}
     <input type="submit" value="Delete">
 </form>
 
 
-<form action="/api/flights/{{flight.pk}}/" method="post">
+<form action="/flights/{{flight.pk}}/" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Submit">

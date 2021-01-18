@@ -52,7 +52,7 @@
                 {{flight.fields.phone}}
             </th>
             <th>
-                <a class="btn btn-primary" href="/api/flights/{{flight.pk}}" role="button">Edit</a>
+                <a class="btn btn-primary" href="/flights/{{flight.pk}}" role="button">Edit</a>
             </th>
         </tr>
         {% endfor %}
@@ -87,7 +87,7 @@
   <button type="submit" class="btn btn-primary">Submit</button>  
 </form>   {% endcomment %}
 
-<form action="/api/flights/" method="post">
+<form action="/flights/" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Submit">
