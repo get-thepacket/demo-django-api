@@ -1,7 +1,11 @@
 from django.urls import path
-from .views import all_flights, hello
+from .views import *
 
 urlpatterns = [
-    path('all-flights/',all_flights),
-    path('hello/',hello),
+    # path('flights/',Flights.as_view()), 
+    path('flights/', flight),
+    path('hello/',Hello.as_view()), #test
+    # path('flights/<int:f_id>/', FlightUpdate.as_view()),
+    path('flights/<int:f_id>/',updateFlight),
+    path('flights/<int:f_id>/delete/', deleteFlight),
 ]
